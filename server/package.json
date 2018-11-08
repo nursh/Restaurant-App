@@ -4,20 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "ts-node ./src/server.ts",
-    "start": "nodemon ./dist/server.js",
-    "prod": "npm run build && npm run start"
+    "start": "nodemon index"
   },
   "keywords": [],
   "author": "nur-sh",
   "license": "ISC",
   "dependencies": {
-    "apollo-server-express": "^2.2.0",
-    "body-parser": "^1.18.3",
-    "concurrently": "^4.0.1",
-    "express": "^4.16.4",
-    "graphql": "^14.0.2"
+    "express": "^4.16.4"
   },
   "devDependencies": {
     "nodemon": "^1.18.6"
