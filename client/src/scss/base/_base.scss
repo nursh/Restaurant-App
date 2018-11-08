@@ -1,0 +1,29 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  // Makes writing media queries very simple
+  font-size: 62.5%; // Defines 1rem as 10px -> 10/16 = 0.625
+}
+
+body {
+  position: relative;
+}
+
+.app {
+  height: 100vh;
+  background-image: radial-gradient($red-secondary, $red-primary);
+}
+
+.banner {
+  @include absCenter;
+  background-color: $color-grey-light-1;
+  padding: 5rem;
+  font-size: 1.8rem;
+  box-shadow: .1rem .9rem 3.2rem -.1rem rgba(0,0,0,0.45);
+}
