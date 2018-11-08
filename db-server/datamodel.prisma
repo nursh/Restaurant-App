@@ -1,0 +1,5 @@
+type Food {
+  id: ID! @unique
+  name: String!
+  price: Float!
+}
