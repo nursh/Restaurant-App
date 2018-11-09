@@ -1,5 +1,5 @@
 module.exports = {
-        typeDefs: /* GraphQL */ `type AggregateUser {
+        typeDefs: /* GraphQL */ `type AggregateFood {
   count: Int!
 }
 
@@ -7,104 +7,71 @@ type BatchPayload {
   count: Long!
 }
 
-scalar Long
-
-type Mutation {
-  createUser(data: UserCreateInput!): User!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  deleteUser(where: UserWhereUniqueInput!): User
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
-}
-
-enum MutationType {
-  CREATED
-  UPDATED
-  DELETED
-}
-
-interface Node {
-  id: ID!
-}
-
-type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-  endCursor: String
-}
-
-type Query {
-  user(where: UserWhereUniqueInput!): User
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  node(id: ID!): Node
-}
-
-type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-}
-
-type User {
+type Food {
   id: ID!
   name: String!
+  price: Float!
 }
 
-type UserConnection {
+type FoodConnection {
   pageInfo: PageInfo!
-  edges: [UserEdge]!
-  aggregate: AggregateUser!
+  edges: [FoodEdge]!
+  aggregate: AggregateFood!
 }
 
-input UserCreateInput {
+input FoodCreateInput {
   name: String!
+  price: Float!
 }
 
-type UserEdge {
-  node: User!
+type FoodEdge {
+  node: Food!
   cursor: String!
 }
 
-enum UserOrderByInput {
+enum FoodOrderByInput {
   id_ASC
   id_DESC
   name_ASC
   name_DESC
+  price_ASC
+  price_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
 
-type UserPreviousValues {
+type FoodPreviousValues {
   id: ID!
   name: String!
+  price: Float!
 }
 
-type UserSubscriptionPayload {
+type FoodSubscriptionPayload {
   mutation: MutationType!
-  node: User
+  node: Food
   updatedFields: [String!]
-  previousValues: UserPreviousValues
+  previousValues: FoodPreviousValues
 }
 
-input UserSubscriptionWhereInput {
+input FoodSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: UserWhereInput
-  AND: [UserSubscriptionWhereInput!]
-  OR: [UserSubscriptionWhereInput!]
-  NOT: [UserSubscriptionWhereInput!]
+  node: FoodWhereInput
+  AND: [FoodSubscriptionWhereInput!]
+  OR: [FoodSubscriptionWhereInput!]
+  NOT: [FoodSubscriptionWhereInput!]
 }
 
-input UserUpdateInput {
+input FoodUpdateInput {
   name: String
+  price: Float
 }
 
-input UserWhereInput {
+input FoodWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -133,13 +100,60 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  AND: [UserWhereInput!]
-  OR: [UserWhereInput!]
-  NOT: [UserWhereInput!]
+  price: Float
+  price_not: Float
+  price_in: [Float!]
+  price_not_in: [Float!]
+  price_lt: Float
+  price_lte: Float
+  price_gt: Float
+  price_gte: Float
+  AND: [FoodWhereInput!]
+  OR: [FoodWhereInput!]
+  NOT: [FoodWhereInput!]
 }
 
-input UserWhereUniqueInput {
+input FoodWhereUniqueInput {
   id: ID
+}
+
+scalar Long
+
+type Mutation {
+  createFood(data: FoodCreateInput!): Food!
+  updateFood(data: FoodUpdateInput!, where: FoodWhereUniqueInput!): Food
+  updateManyFoods(data: FoodUpdateInput!, where: FoodWhereInput): BatchPayload!
+  upsertFood(where: FoodWhereUniqueInput!, create: FoodCreateInput!, update: FoodUpdateInput!): Food!
+  deleteFood(where: FoodWhereUniqueInput!): Food
+  deleteManyFoods(where: FoodWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  food(where: FoodWhereUniqueInput!): Food
+  foods(where: FoodWhereInput, orderBy: FoodOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Food]!
+  foodsConnection(where: FoodWhereInput, orderBy: FoodOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FoodConnection!
+  node(id: ID!): Node
+}
+
+type Subscription {
+  food(where: FoodSubscriptionWhereInput): FoodSubscriptionPayload
 }
 `
       }
