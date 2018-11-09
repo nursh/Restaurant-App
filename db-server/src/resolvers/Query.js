@@ -1,9 +1,11 @@
 const Query = {
-  name(parent, args, context, info) {
-    return "nuradeen mohammed";
-  },
-  age(parent, args, context, info) {
-    return 23;
+  menuItem(parent, args, ctx, info) {
+    return {
+      id: "hdjfahsdasdkfasdf",
+      name: "Pounded yam",
+      price: 200.0,
+      category: "BREAKFAST"
+    };
   }
 };
 
