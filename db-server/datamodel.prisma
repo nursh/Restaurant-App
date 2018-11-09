@@ -1,5 +1,35 @@
-type Food {
+type MenuItem {
   id: ID! @unique
   name: String!
   price: Float!
+  category: Category!
+}
+
+type Order {
+  id: ID! @unique
+  items: [OrderItem!]!
+  total: Float!
+}
+
+type OrderItem {
+  name: String!
+  quantity: Int!
+  price: Float!
+}
+
+
+enum Category {
+  BREAKFAST
+  MAIN_DISH
+  SOUPS
+  BITES
+  RICE_DISHES
+  AFRICAN_HOTPOT
+  DELIGHTS
+  COLD_STARTER
+  PEPPERED_BITES
+  PET_DRINKS
+  BOTTLE_DRINKS
+  CAN_DRINKS
+  JUICE
 }
