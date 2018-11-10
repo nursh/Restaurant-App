@@ -1,0 +1,39 @@
+type Query {
+  menuItem(id: ID!): MenuItem!
+  menuItems: [MenuItem!]!
+}
+
+type MenuItem {
+  id: ID!
+  name: String!
+  price: Float!
+  category: Category!
+}
+
+type Order {
+  id: ID!
+  items: [OrderItem!]!
+  total: Float!
+}
+
+type OrderItem {
+  name: String!
+  quantity: Int!
+  price: Float!
+}
+
+enum Category {
+  BREAKFAST
+  MAIN_DISH
+  SOUPS
+  BITES
+  RICE_DISHES
+  AFRICAN_HOT_POT
+  DELIGHTS
+  COLD_STARTER
+  PEPPERED_BITES
+  PET_DRINKS
+  BOTTLE_DRINKS
+  CAN_DRINKS
+  JUICE
+}
