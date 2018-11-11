@@ -1,11 +1,7 @@
 const Query = {
-  menuItem(parent, args, ctx, info) {
-    return {
-      id: "hdjfahsdasdkfasdf",
-      name: "Pounded yam",
-      price: 200.0,
-      category: "BREAKFAST"
-    };
+  async menuItem(parent, args, { prisma }, info) {
+    const menuItem = await prisma.menuItem({ id: args.id });
+    return menuItem;
   },
   async menuItems(parent, args, { prisma }, info) {
     const menuItems = await prisma.menuItems();
