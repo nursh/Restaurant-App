@@ -4,7 +4,16 @@ const Query = {
     return menuItem;
   },
   async menuItems(parent, args, { prisma }, info) {
-    const menuItems = await prisma.menuItems();
+
+    const opArgs = {};
+
+    if (args.category) {
+      opArgs.where = {
+        category: args.category,
+      }
+    }
+
+    const menuItems = await prisma.menuItems(opArgs);
     return menuItems;
   }, 
   async order(parent, args, { prisma }, info) {
