@@ -2,6 +2,8 @@ type Query {
   menuItem(id: ID!): MenuItem!
   menuItems(category: Category): [MenuItem!]!
   order(id: ID!): Order!
+  orders: [Order!]!
+  orderItem(id: ID!): OrderItem!
 }
 
 type MenuItem {
@@ -18,6 +20,7 @@ type Order {
 }
 
 type OrderItem {
+  id: ID!
   name: String!
   quantity: Int!
   price: Float!

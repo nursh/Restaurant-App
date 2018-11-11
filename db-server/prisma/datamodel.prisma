@@ -12,6 +12,7 @@ type Order {
 }
 
 type OrderItem {
+  id: ID! @unique
   name: String!
   quantity: Int!
   price: Float!
