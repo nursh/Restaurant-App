@@ -1,6 +1,7 @@
 type Query {
   menuItem(id: ID!): MenuItem!
   menuItems: [MenuItem!]!
+  order(id: ID!): Order!
 }
 
 type MenuItem {

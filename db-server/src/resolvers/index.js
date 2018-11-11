@@ -1,7 +1,9 @@
 import Query from './Query';
+import Order from './Order';
 
 const resolvers = {
-  Query
+  Query,
+  Order
 };
 
 export { resolvers as default };
