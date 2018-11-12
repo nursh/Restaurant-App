@@ -6,6 +6,17 @@ type Query {
   orderItem(id: ID!): OrderItem!
 }
 
+type Mutation {
+  createMenuItem(data: MenuItemInput): MenuItem!
+  deleteMenuItem(id: ID!): MenuItem!
+}
+
+input MenuItemInput {
+  name: String!
+  price: Float!
+  category: Category!
+}
+
 type MenuItem {
   id: ID!
   name: String!
