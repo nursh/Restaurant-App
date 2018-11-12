@@ -7,14 +7,21 @@ type Query {
 }
 
 type Mutation {
-  createMenuItem(data: MenuItemInput): MenuItem!
+  createMenuItem(data: CreateMenuItemInput!): MenuItem!
+  updateMenuItem(id: ID!, data: UpdateMenuItemInput!): MenuItem!
   deleteMenuItem(id: ID!): MenuItem!
 }
 
-input MenuItemInput {
+input CreateMenuItemInput {
   name: String!
   price: Float!
   category: Category!
+}
+
+input UpdateMenuItemInput {
+  name: String
+  price: Float
+  category: Category
 }
 
 type MenuItem {
