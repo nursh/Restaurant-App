@@ -1,5 +1,5 @@
 const Mutation = {
-  async createMenuInput(parent, args, { prisma }, info) {
+  async createMenuItem(parent, args, { prisma }, info) {
     const menuItem = await prisma.createMenuItem({
       name: args.data.name,
       price: args.data.price,
@@ -7,15 +7,16 @@ const Mutation = {
     });
     return menuItem;
   },
-  async updateMenuInput(parent, args, { prisma }, info) {
+  async updateMenuItem(parent, args, { prisma }, info) {
     const menuItem = await prisma.updateMenuItem({
       where: {
         id: args.id
       },
       data: args.data
     });
+    return menuItem;
   },
-  async deleteMenuInput(parent, args, { prisma }, info) {
+  async deleteMenuItem(parent, args, { prisma }, info) {
     const menuItem = await prisma.deleteMenuItem({ id: args.id });
     return menuItem;
   }
