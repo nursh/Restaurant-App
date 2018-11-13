@@ -1,9 +1,13 @@
-import Query from './Query';
-import Order from './Order';
+import Query from "./Query";
+import Mutation from "./Mutation";
+import Order from "./Order";
+import OrderItem from "./OrderItem";
 
 const resolvers = {
   Query,
-  Order
+  Mutation,
+  Order,
+  OrderItem
 };
 
 export { resolvers as default };

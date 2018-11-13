@@ -4,12 +4,19 @@ type Query {
   order(id: ID!): Order!
   orders: [Order!]!
   orderItem(id: ID!): OrderItem!
+  orderItems: [OrderItem!]!
 }
 
 type Mutation {
   createMenuItem(data: CreateMenuItemInput!): MenuItem!
   updateMenuItem(id: ID!, data: UpdateMenuItemInput!): MenuItem!
   deleteMenuItem(id: ID!): MenuItem!
+  createOrder: Order!
+  updateOrder(id: ID!, data: UpdateOrderInput!): Order!
+  deleteOrder(id: ID!): Order!
+  createOrderItem(data: CreateOrderItemInput!): OrderItem!
+  updateOrderItem(id: ID!, data: UpdateOrderItemInput!): OrderItem!
+  deleteOrderItem(id: ID!): OrderItem!
 }
 
 input CreateMenuItemInput {
@@ -22,6 +29,23 @@ input UpdateMenuItemInput {
   name: String
   price: Float
   category: Category
+}
+
+input CreateOrderItemInput {
+  name: String!
+  quantity: Int!
+  price: Float!
+  order: ID!
+}
+
+input UpdateOrderItemInput {
+  quantity: Int
+  order: ID!
+  price: Int
+}
+
+input UpdateOrderInput {
+  total: Int
 }
 
 type MenuItem {
@@ -42,6 +66,7 @@ type OrderItem {
   name: String!
   quantity: Int!
   price: Float!
+  order: Order!
 }
 
 enum Category {

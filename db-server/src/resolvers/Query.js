@@ -25,7 +25,11 @@ const Query = {
   },
   async orderItem(parent, args, { prisma }, info) {
     const orderItem = await prisma.orderItem({ id: args.id });
-    return this.orderItem;
+    return orderItem;
+  },
+  async orderItems(parent, args, { prisma }, info) {
+    const orderItems = await prisma.orderItems();
+    return orderItems;
   }
 };
 
