@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-class Banner extends Component {
+class Home extends Component {
   render() {
     return (
       <div className="app">
@@ -12,8 +12,10 @@ class Banner extends Component {
             Hello fellow food lovers, Try our delicious african cuisine and have
             your taste buds tickled
           </div>
-          <div className="banner__button">
-            <Link to="/menu">Browse our Menu</Link>
+          <div>
+            <Link to="/menu" className="banner__button">
+              Browse our Menu
+            </Link>
           </div>
         </div>
       </div>
@@ -21,4 +23,4 @@ class Banner extends Component {
   }
 }
 
-export default Banner;
+export default Home;

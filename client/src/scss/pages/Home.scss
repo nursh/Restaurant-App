@@ -1,0 +1,30 @@
+.app {
+  height: 100vh;
+  background-image: radial-gradient($red-secondary, $red-primary);
+}
+
+.banner {
+  @include absCenter;
+  background-color: $color-grey-light-1;
+  padding: 5rem;
+  font-size: 1.8rem;
+  box-shadow: 0.1rem 0.9rem 3.2rem -0.1rem rgba(0, 0, 0, 0.45);
+}
+
+.banner__body {
+  font-family: "Concert One";
+  font-size: 3rem;
+  text-align: center;
+}
+
+.banner__button {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 500;
+  color: #222;
+  border: 0.05rem solid #222;
+  padding: .5rem 1rem;
+  border-radius: 3px;
+  float: right;
+  margin-top: 2rem;
+}
