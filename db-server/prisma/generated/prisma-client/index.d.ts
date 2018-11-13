@@ -80,6 +80,7 @@ export interface Prisma {
       last?: Int;
     }
   ) => OrderConnectionPromise;
+  orderItem: (where: OrderItemWhereUniqueInput) => OrderItemPromise;
   orderItems: (
     args?: {
       where?: OrderItemWhereInput;
@@ -141,12 +142,23 @@ export interface Prisma {
   deleteOrder: (where: OrderWhereUniqueInput) => OrderPromise;
   deleteManyOrders: (where?: OrderWhereInput) => BatchPayloadPromise;
   createOrderItem: (data: OrderItemCreateInput) => OrderItemPromise;
+  updateOrderItem: (
+    args: { data: OrderItemUpdateInput; where: OrderItemWhereUniqueInput }
+  ) => OrderItemPromise;
   updateManyOrderItems: (
     args: {
       data: OrderItemUpdateManyMutationInput;
       where?: OrderItemWhereInput;
     }
   ) => BatchPayloadPromise;
+  upsertOrderItem: (
+    args: {
+      where: OrderItemWhereUniqueInput;
+      create: OrderItemCreateInput;
+      update: OrderItemUpdateInput;
+    }
+  ) => OrderItemPromise;
+  deleteOrderItem: (where: OrderItemWhereUniqueInput) => OrderItemPromise;
   deleteManyOrderItems: (where?: OrderItemWhereInput) => BatchPayloadPromise;
 
   /**
@@ -190,20 +202,6 @@ export type MenuItemOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type OrderItemOrderByInput =
-  | "name_ASC"
-  | "name_DESC"
-  | "quantity_ASC"
-  | "quantity_DESC"
-  | "price_ASC"
-  | "price_DESC"
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
 export type Category =
   | "BREAKFAST"
   | "MAIN_DISH"
@@ -219,7 +217,19 @@ export type Category =
   | "CAN_DRINKS"
   | "JUICE";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+export type OrderItemOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "quantity_ASC"
+  | "quantity_DESC"
+  | "price_ASC"
+  | "price_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type OrderOrderByInput =
   | "id_ASC"
@@ -231,13 +241,22 @@ export type OrderOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type OrderWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export interface MenuItemUpdateInput {
+  name?: String;
+  price?: Float;
+  category?: Category;
+}
 
 export type MenuItemWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
+
+export interface OrderCreateInput {
+  items?: OrderItemCreateManyWithoutOrderInput;
+  total: Float;
+}
 
 export interface MenuItemWhereInput {
   id?: ID_Input;
@@ -285,24 +304,33 @@ export interface MenuItemWhereInput {
   NOT?: MenuItemWhereInput[] | MenuItemWhereInput;
 }
 
-export interface MenuItemSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: MenuItemWhereInput;
-  AND?: MenuItemSubscriptionWhereInput[] | MenuItemSubscriptionWhereInput;
-  OR?: MenuItemSubscriptionWhereInput[] | MenuItemSubscriptionWhereInput;
-  NOT?: MenuItemSubscriptionWhereInput[] | MenuItemSubscriptionWhereInput;
+export interface OrderCreateOneWithoutItemsInput {
+  create?: OrderCreateWithoutItemsInput;
+  connect?: OrderWhereUniqueInput;
 }
 
-export interface OrderUpdateInput {
-  items?: OrderItemUpdateManyWithoutOrderInput;
-  total?: Float;
+export interface OrderItemCreateWithoutOrderInput {
+  name: String;
+  quantity: Int;
+  price: Float;
 }
 
-export interface OrderCreateWithoutItemsInput {
-  total: Float;
+export type OrderItemWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface OrderItemCreateManyWithoutOrderInput {
+  create?:
+    | OrderItemCreateWithoutOrderInput[]
+    | OrderItemCreateWithoutOrderInput;
+  connect?: OrderItemWhereUniqueInput[] | OrderItemWhereUniqueInput;
+}
+
+export interface OrderItemCreateInput {
+  name: String;
+  quantity: Int;
+  price: Float;
+  order: OrderCreateOneWithoutItemsInput;
 }
 
 export interface OrderSubscriptionWhereInput {
@@ -316,37 +344,35 @@ export interface OrderSubscriptionWhereInput {
   NOT?: OrderSubscriptionWhereInput[] | OrderSubscriptionWhereInput;
 }
 
-export interface OrderItemCreateInput {
-  name: String;
-  quantity: Int;
-  price: Float;
-  order: OrderCreateOneWithoutItemsInput;
+export interface OrderUpdateManyMutationInput {
+  total?: Float;
 }
 
-export interface OrderItemCreateWithoutOrderInput {
-  name: String;
-  quantity: Int;
-  price: Float;
-}
+export type OrderWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
 
-export interface OrderItemSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: OrderItemWhereInput;
-  AND?: OrderItemSubscriptionWhereInput[] | OrderItemSubscriptionWhereInput;
-  OR?: OrderItemSubscriptionWhereInput[] | OrderItemSubscriptionWhereInput;
-  NOT?: OrderItemSubscriptionWhereInput[] | OrderItemSubscriptionWhereInput;
-}
-
-export interface OrderItemCreateManyWithoutOrderInput {
-  create?:
-    | OrderItemCreateWithoutOrderInput[]
-    | OrderItemCreateWithoutOrderInput;
+export interface OrderItemUpsertWithWhereUniqueWithoutOrderInput {
+  where: OrderItemWhereUniqueInput;
+  update: OrderItemUpdateWithoutOrderDataInput;
+  create: OrderItemCreateWithoutOrderInput;
 }
 
 export interface OrderItemWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
   name?: String;
   name_not?: String;
   name_in?: String[] | String;
@@ -383,16 +409,68 @@ export interface OrderItemWhereInput {
   NOT?: OrderItemWhereInput[] | OrderItemWhereInput;
 }
 
+export interface OrderUpsertWithoutItemsInput {
+  update: OrderUpdateWithoutItemsDataInput;
+  create: OrderCreateWithoutItemsInput;
+}
+
+export interface OrderUpdateOneRequiredWithoutItemsInput {
+  create?: OrderCreateWithoutItemsInput;
+  update?: OrderUpdateWithoutItemsDataInput;
+  upsert?: OrderUpsertWithoutItemsInput;
+  connect?: OrderWhereUniqueInput;
+}
+
 export interface MenuItemCreateInput {
   name: String;
   price: Float;
   category: Category;
 }
 
-export interface MenuItemUpdateInput {
+export interface OrderCreateWithoutItemsInput {
+  total: Float;
+}
+
+export interface OrderItemUpdateWithoutOrderDataInput {
   name?: String;
+  quantity?: Int;
   price?: Float;
-  category?: Category;
+}
+
+export interface MenuItemSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: MenuItemWhereInput;
+  AND?: MenuItemSubscriptionWhereInput[] | MenuItemSubscriptionWhereInput;
+  OR?: MenuItemSubscriptionWhereInput[] | MenuItemSubscriptionWhereInput;
+  NOT?: MenuItemSubscriptionWhereInput[] | MenuItemSubscriptionWhereInput;
+}
+
+export interface OrderUpdateInput {
+  items?: OrderItemUpdateManyWithoutOrderInput;
+  total?: Float;
+}
+
+export interface OrderItemUpdateManyWithoutOrderInput {
+  create?:
+    | OrderItemCreateWithoutOrderInput[]
+    | OrderItemCreateWithoutOrderInput;
+  delete?: OrderItemWhereUniqueInput[] | OrderItemWhereUniqueInput;
+  connect?: OrderItemWhereUniqueInput[] | OrderItemWhereUniqueInput;
+  disconnect?: OrderItemWhereUniqueInput[] | OrderItemWhereUniqueInput;
+  update?:
+    | OrderItemUpdateWithWhereUniqueWithoutOrderInput[]
+    | OrderItemUpdateWithWhereUniqueWithoutOrderInput;
+  upsert?:
+    | OrderItemUpsertWithWhereUniqueWithoutOrderInput[]
+    | OrderItemUpsertWithWhereUniqueWithoutOrderInput;
+}
+
+export interface OrderItemUpdateWithWhereUniqueWithoutOrderInput {
+  where: OrderItemWhereUniqueInput;
+  data: OrderItemUpdateWithoutOrderDataInput;
 }
 
 export interface MenuItemUpdateManyMutationInput {
@@ -401,9 +479,32 @@ export interface MenuItemUpdateManyMutationInput {
   category?: Category;
 }
 
-export interface OrderCreateInput {
-  items?: OrderItemCreateManyWithoutOrderInput;
-  total: Float;
+export interface OrderItemUpdateManyMutationInput {
+  name?: String;
+  quantity?: Int;
+  price?: Float;
+}
+
+export interface OrderItemSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: OrderItemWhereInput;
+  AND?: OrderItemSubscriptionWhereInput[] | OrderItemSubscriptionWhereInput;
+  OR?: OrderItemSubscriptionWhereInput[] | OrderItemSubscriptionWhereInput;
+  NOT?: OrderItemSubscriptionWhereInput[] | OrderItemSubscriptionWhereInput;
+}
+
+export interface OrderItemUpdateInput {
+  name?: String;
+  quantity?: Int;
+  price?: Float;
+  order?: OrderUpdateOneRequiredWithoutItemsInput;
+}
+
+export interface OrderUpdateWithoutItemsDataInput {
+  total?: Float;
 }
 
 export interface OrderWhereInput {
@@ -437,61 +538,113 @@ export interface OrderWhereInput {
   NOT?: OrderWhereInput[] | OrderWhereInput;
 }
 
-export interface OrderItemUpdateManyWithoutOrderInput {
-  create?:
-    | OrderItemCreateWithoutOrderInput[]
-    | OrderItemCreateWithoutOrderInput;
-}
-
-export interface OrderUpdateManyMutationInput {
-  total?: Float;
-}
-
-export interface OrderCreateOneWithoutItemsInput {
-  create?: OrderCreateWithoutItemsInput;
-  connect?: OrderWhereUniqueInput;
-}
-
-export interface OrderItemUpdateManyMutationInput {
-  name?: String;
-  quantity?: Int;
-  price?: Float;
-}
-
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface AggregateOrderItem {
-  count: Int;
+export interface OrderItemPreviousValues {
+  id: ID_Output;
+  name: String;
+  quantity: Int;
+  price: Float;
 }
 
-export interface AggregateOrderItemPromise
-  extends Promise<AggregateOrderItem>,
+export interface OrderItemPreviousValuesPromise
+  extends Promise<OrderItemPreviousValues>,
     Fragmentable {
-  count: () => Promise<Int>;
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  quantity: () => Promise<Int>;
+  price: () => Promise<Float>;
 }
 
-export interface AggregateOrderItemSubscription
-  extends Promise<AsyncIterator<AggregateOrderItem>>,
+export interface OrderItemPreviousValuesSubscription
+  extends Promise<AsyncIterator<OrderItemPreviousValues>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  quantity: () => Promise<AsyncIterator<Int>>;
+  price: () => Promise<AsyncIterator<Float>>;
 }
 
-export interface AggregateMenuItem {
-  count: Int;
+export interface OrderItem {
+  id: ID_Output;
+  name: String;
+  quantity: Int;
+  price: Float;
 }
 
-export interface AggregateMenuItemPromise
-  extends Promise<AggregateMenuItem>,
+export interface OrderItemPromise extends Promise<OrderItem>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  quantity: () => Promise<Int>;
+  price: () => Promise<Float>;
+  order: <T = Order>() => T;
+}
+
+export interface OrderItemSubscription
+  extends Promise<AsyncIterator<OrderItem>>,
     Fragmentable {
-  count: () => Promise<Int>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  quantity: () => Promise<AsyncIterator<Int>>;
+  price: () => Promise<AsyncIterator<Float>>;
+  order: <T = OrderSubscription>() => T;
 }
 
-export interface AggregateMenuItemSubscription
-  extends Promise<AsyncIterator<AggregateMenuItem>>,
+export interface MenuItemConnection {}
+
+export interface MenuItemConnectionPromise
+  extends Promise<MenuItemConnection>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<MenuItemEdge>>() => T;
+  aggregate: <T = AggregateMenuItem>() => T;
+}
+
+export interface MenuItemConnectionSubscription
+  extends Promise<AsyncIterator<MenuItemConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MenuItemEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMenuItemSubscription>() => T;
+}
+
+export interface OrderPreviousValues {
+  id: ID_Output;
+  total: Float;
+}
+
+export interface OrderPreviousValuesPromise
+  extends Promise<OrderPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  total: () => Promise<Float>;
+}
+
+export interface OrderPreviousValuesSubscription
+  extends Promise<AsyncIterator<OrderPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  total: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface MenuItemEdge {
+  cursor: String;
+}
+
+export interface MenuItemEdgePromise
+  extends Promise<MenuItemEdge>,
+    Fragmentable {
+  node: <T = MenuItem>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MenuItemEdgeSubscription
+  extends Promise<AsyncIterator<MenuItemEdge>>,
+    Fragmentable {
+  node: <T = MenuItemSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface OrderSubscriptionPayload {
@@ -517,80 +670,6 @@ export interface OrderSubscriptionPayloadSubscription
   previousValues: <T = OrderPreviousValuesSubscription>() => T;
 }
 
-export interface MenuItemEdge {
-  cursor: String;
-}
-
-export interface MenuItemEdgePromise
-  extends Promise<MenuItemEdge>,
-    Fragmentable {
-  node: <T = MenuItem>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface MenuItemEdgeSubscription
-  extends Promise<AsyncIterator<MenuItemEdge>>,
-    Fragmentable {
-  node: <T = MenuItemSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface OrderItemPreviousValues {
-  name: String;
-  quantity: Int;
-  price: Float;
-}
-
-export interface OrderItemPreviousValuesPromise
-  extends Promise<OrderItemPreviousValues>,
-    Fragmentable {
-  name: () => Promise<String>;
-  quantity: () => Promise<Int>;
-  price: () => Promise<Float>;
-}
-
-export interface OrderItemPreviousValuesSubscription
-  extends Promise<AsyncIterator<OrderItemPreviousValues>>,
-    Fragmentable {
-  name: () => Promise<AsyncIterator<String>>;
-  quantity: () => Promise<AsyncIterator<Int>>;
-  price: () => Promise<AsyncIterator<Float>>;
-}
-
-export interface OrderItemEdge {
-  cursor: String;
-}
-
-export interface OrderItemEdgePromise
-  extends Promise<OrderItemEdge>,
-    Fragmentable {
-  node: <T = OrderItem>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface OrderItemEdgeSubscription
-  extends Promise<AsyncIterator<OrderItemEdge>>,
-    Fragmentable {
-  node: <T = OrderItemSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
 export interface PageInfo {
   hasNextPage: Boolean;
   hasPreviousPage: Boolean;
@@ -614,56 +693,36 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateOrder {
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface AggregateOrderItem {
   count: Int;
 }
 
-export interface AggregateOrderPromise
-  extends Promise<AggregateOrder>,
+export interface AggregateOrderItemPromise
+  extends Promise<AggregateOrderItem>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateOrderSubscription
-  extends Promise<AsyncIterator<AggregateOrder>>,
+export interface AggregateOrderItemSubscription
+  extends Promise<AsyncIterator<AggregateOrderItem>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface MenuItemConnection {}
-
-export interface MenuItemConnectionPromise
-  extends Promise<MenuItemConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<MenuItemEdge>>() => T;
-  aggregate: <T = AggregateMenuItem>() => T;
-}
-
-export interface MenuItemConnectionSubscription
-  extends Promise<AsyncIterator<MenuItemConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<MenuItemEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateMenuItemSubscription>() => T;
-}
-
-export interface OrderConnection {}
-
-export interface OrderConnectionPromise
-  extends Promise<OrderConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<OrderEdge>>() => T;
-  aggregate: <T = AggregateOrder>() => T;
-}
-
-export interface OrderConnectionSubscription
-  extends Promise<AsyncIterator<OrderConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<OrderEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateOrderSubscription>() => T;
 }
 
 export interface Order {
@@ -703,6 +762,40 @@ export interface OrderSubscription
     }
   ) => T;
   total: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface OrderItemConnection {}
+
+export interface OrderItemConnectionPromise
+  extends Promise<OrderItemConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfo>() => T;
+  edges: <T = FragmentableArray<OrderItemEdge>>() => T;
+  aggregate: <T = AggregateOrderItem>() => T;
+}
+
+export interface OrderItemConnectionSubscription
+  extends Promise<AsyncIterator<OrderItemConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<OrderItemEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateOrderItemSubscription>() => T;
+}
+
+export interface OrderEdge {
+  cursor: String;
+}
+
+export interface OrderEdgePromise extends Promise<OrderEdge>, Fragmentable {
+  node: <T = Order>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface OrderEdgeSubscription
+  extends Promise<AsyncIterator<OrderEdge>>,
+    Fragmentable {
+  node: <T = OrderSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface MenuItemPreviousValues {
@@ -753,25 +846,6 @@ export interface MenuItemSubscriptionPayloadSubscription
   previousValues: <T = MenuItemPreviousValuesSubscription>() => T;
 }
 
-export interface OrderPreviousValues {
-  id: ID_Output;
-  total: Float;
-}
-
-export interface OrderPreviousValuesPromise
-  extends Promise<OrderPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  total: () => Promise<Float>;
-}
-
-export interface OrderPreviousValuesSubscription
-  extends Promise<AsyncIterator<OrderPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  total: () => Promise<AsyncIterator<Float>>;
-}
-
 export interface MenuItem {
   id: ID_Output;
   name: String;
@@ -795,59 +869,71 @@ export interface MenuItemSubscription
   category: () => Promise<AsyncIterator<Category>>;
 }
 
-export interface OrderItemConnection {}
+export interface AggregateMenuItem {
+  count: Int;
+}
 
-export interface OrderItemConnectionPromise
-  extends Promise<OrderItemConnection>,
+export interface AggregateMenuItemPromise
+  extends Promise<AggregateMenuItem>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMenuItemSubscription
+  extends Promise<AsyncIterator<AggregateMenuItem>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface OrderConnection {}
+
+export interface OrderConnectionPromise
+  extends Promise<OrderConnection>,
     Fragmentable {
   pageInfo: <T = PageInfo>() => T;
-  edges: <T = FragmentableArray<OrderItemEdge>>() => T;
-  aggregate: <T = AggregateOrderItem>() => T;
+  edges: <T = FragmentableArray<OrderEdge>>() => T;
+  aggregate: <T = AggregateOrder>() => T;
 }
 
-export interface OrderItemConnectionSubscription
-  extends Promise<AsyncIterator<OrderItemConnection>>,
+export interface OrderConnectionSubscription
+  extends Promise<AsyncIterator<OrderConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<OrderItemEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateOrderItemSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<OrderEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateOrderSubscription>() => T;
 }
 
-export interface OrderItem {
-  name: String;
-  quantity: Int;
-  price: Float;
+export interface AggregateOrder {
+  count: Int;
 }
 
-export interface OrderItemPromise extends Promise<OrderItem>, Fragmentable {
-  name: () => Promise<String>;
-  quantity: () => Promise<Int>;
-  price: () => Promise<Float>;
-  order: <T = Order>() => T;
-}
-
-export interface OrderItemSubscription
-  extends Promise<AsyncIterator<OrderItem>>,
+export interface AggregateOrderPromise
+  extends Promise<AggregateOrder>,
     Fragmentable {
-  name: () => Promise<AsyncIterator<String>>;
-  quantity: () => Promise<AsyncIterator<Int>>;
-  price: () => Promise<AsyncIterator<Float>>;
-  order: <T = OrderSubscription>() => T;
+  count: () => Promise<Int>;
 }
 
-export interface OrderEdge {
+export interface AggregateOrderSubscription
+  extends Promise<AsyncIterator<AggregateOrder>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface OrderItemEdge {
   cursor: String;
 }
 
-export interface OrderEdgePromise extends Promise<OrderEdge>, Fragmentable {
-  node: <T = Order>() => T;
+export interface OrderItemEdgePromise
+  extends Promise<OrderItemEdge>,
+    Fragmentable {
+  node: <T = OrderItem>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface OrderEdgeSubscription
-  extends Promise<AsyncIterator<OrderEdge>>,
+export interface OrderItemEdgeSubscription
+  extends Promise<AsyncIterator<OrderItemEdge>>,
     Fragmentable {
-  node: <T = OrderSubscription>() => T;
+  node: <T = OrderItemSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -875,9 +961,11 @@ export interface OrderItemSubscriptionPayloadSubscription
 }
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
 */
-export type Boolean = boolean;
+export type Float = number;
+
+export type Long = string;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -885,22 +973,20 @@ The `ID` scalar type represents a unique identifier, often used to refetch an ob
 export type ID_Input = string | number;
 export type ID_Output = string;
 
-export type Long = string;
-
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+The `Boolean` scalar type represents `true` or `false`.
 */
-export type Int = number;
-
-/*
-The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](http://en.wikipedia.org/wiki/IEEE_floating_point). 
-*/
-export type Float = number;
+export type Boolean = boolean;
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number;
 
 /**
  * Type Defs

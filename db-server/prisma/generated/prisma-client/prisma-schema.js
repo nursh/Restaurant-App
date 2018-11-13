@@ -173,7 +173,10 @@ type Mutation {
   deleteOrder(where: OrderWhereUniqueInput!): Order
   deleteManyOrders(where: OrderWhereInput): BatchPayload!
   createOrderItem(data: OrderItemCreateInput!): OrderItem!
+  updateOrderItem(data: OrderItemUpdateInput!, where: OrderItemWhereUniqueInput!): OrderItem
   updateManyOrderItems(data: OrderItemUpdateManyMutationInput!, where: OrderItemWhereInput): BatchPayload!
+  upsertOrderItem(where: OrderItemWhereUniqueInput!, create: OrderItemCreateInput!, update: OrderItemUpdateInput!): OrderItem!
+  deleteOrderItem(where: OrderItemWhereUniqueInput!): OrderItem
   deleteManyOrderItems(where: OrderItemWhereInput): BatchPayload!
 }
 
@@ -219,6 +222,7 @@ type OrderEdge {
 }
 
 type OrderItem {
+  id: ID!
   name: String!
   quantity: Int!
   price: Float!
@@ -240,6 +244,7 @@ input OrderItemCreateInput {
 
 input OrderItemCreateManyWithoutOrderInput {
   create: [OrderItemCreateWithoutOrderInput!]
+  connect: [OrderItemWhereUniqueInput!]
 }
 
 input OrderItemCreateWithoutOrderInput {
@@ -254,14 +259,14 @@ type OrderItemEdge {
 }
 
 enum OrderItemOrderByInput {
+  id_ASC
+  id_DESC
   name_ASC
   name_DESC
   quantity_ASC
   quantity_DESC
   price_ASC
   price_DESC
-  id_ASC
-  id_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -269,6 +274,7 @@ enum OrderItemOrderByInput {
 }
 
 type OrderItemPreviousValues {
+  id: ID!
   name: String!
   quantity: Int!
   price: Float!
@@ -292,6 +298,13 @@ input OrderItemSubscriptionWhereInput {
   NOT: [OrderItemSubscriptionWhereInput!]
 }
 
+input OrderItemUpdateInput {
+  name: String
+  quantity: Int
+  price: Float
+  order: OrderUpdateOneRequiredWithoutItemsInput
+}
+
 input OrderItemUpdateManyMutationInput {
   name: String
   quantity: Int
@@ -300,9 +313,45 @@ input OrderItemUpdateManyMutationInput {
 
 input OrderItemUpdateManyWithoutOrderInput {
   create: [OrderItemCreateWithoutOrderInput!]
+  delete: [OrderItemWhereUniqueInput!]
+  connect: [OrderItemWhereUniqueInput!]
+  disconnect: [OrderItemWhereUniqueInput!]
+  update: [OrderItemUpdateWithWhereUniqueWithoutOrderInput!]
+  upsert: [OrderItemUpsertWithWhereUniqueWithoutOrderInput!]
+}
+
+input OrderItemUpdateWithoutOrderDataInput {
+  name: String
+  quantity: Int
+  price: Float
+}
+
+input OrderItemUpdateWithWhereUniqueWithoutOrderInput {
+  where: OrderItemWhereUniqueInput!
+  data: OrderItemUpdateWithoutOrderDataInput!
+}
+
+input OrderItemUpsertWithWhereUniqueWithoutOrderInput {
+  where: OrderItemWhereUniqueInput!
+  update: OrderItemUpdateWithoutOrderDataInput!
+  create: OrderItemCreateWithoutOrderInput!
 }
 
 input OrderItemWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   name: String
   name_not: String
   name_in: [String!]
@@ -337,6 +386,10 @@ input OrderItemWhereInput {
   AND: [OrderItemWhereInput!]
   OR: [OrderItemWhereInput!]
   NOT: [OrderItemWhereInput!]
+}
+
+input OrderItemWhereUniqueInput {
+  id: ID
 }
 
 enum OrderOrderByInput {
@@ -380,6 +433,22 @@ input OrderUpdateInput {
 
 input OrderUpdateManyMutationInput {
   total: Float
+}
+
+input OrderUpdateOneRequiredWithoutItemsInput {
+  create: OrderCreateWithoutItemsInput
+  update: OrderUpdateWithoutItemsDataInput
+  upsert: OrderUpsertWithoutItemsInput
+  connect: OrderWhereUniqueInput
+}
+
+input OrderUpdateWithoutItemsDataInput {
+  total: Float
+}
+
+input OrderUpsertWithoutItemsInput {
+  update: OrderUpdateWithoutItemsDataInput!
+  create: OrderCreateWithoutItemsInput!
 }
 
 input OrderWhereInput {
@@ -431,6 +500,7 @@ type Query {
   order(where: OrderWhereUniqueInput!): Order
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
   ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
+  orderItem(where: OrderItemWhereUniqueInput!): OrderItem
   orderItems(where: OrderItemWhereInput, orderBy: OrderItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OrderItem]!
   orderItemsConnection(where: OrderItemWhereInput, orderBy: OrderItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderItemConnection!
   node(id: ID!): Node
