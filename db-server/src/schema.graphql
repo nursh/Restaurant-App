@@ -1,0 +1,61 @@
+type Query {
+  menuItem(id: ID!): MenuItem!
+  menuItems(category: Category): [MenuItem!]!
+  order(id: ID!): Order!
+  orders: [Order!]!
+  orderItem(id: ID!): OrderItem!
+}
+
+type Mutation {
+  createMenuItem(data: CreateMenuItemInput!): MenuItem!
+  updateMenuItem(id: ID!, data: UpdateMenuItemInput!): MenuItem!
+  deleteMenuItem(id: ID!): MenuItem!
+}
+
+input CreateMenuItemInput {
+  name: String!
+  price: Float!
+  category: Category!
+}
+
+input UpdateMenuItemInput {
+  name: String
+  price: Float
+  category: Category
+}
+
+type MenuItem {
+  id: ID!
+  name: String!
+  price: Float!
+  category: Category!
+}
+
+type Order {
+  id: ID!
+  items: [OrderItem!]!
+  total: Float!
+}
+
+type OrderItem {
+  id: ID!
+  name: String!
+  quantity: Int!
+  price: Float!
+}
+
+enum Category {
+  BREAKFAST
+  MAIN_DISH
+  SOUPS
+  BITES
+  RICE_DISHES
+  AFRICAN_HOT_POT
+  DELIGHTS
+  COLD_STARTER
+  PEPPERED_BITES
+  PET_DRINKS
+  BOTTLE_DRINKS
+  CAN_DRINKS
+  JUICE
+}
