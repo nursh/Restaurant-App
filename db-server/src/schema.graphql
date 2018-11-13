@@ -12,8 +12,11 @@ type Mutation {
   updateMenuItem(id: ID!, data: UpdateMenuItemInput!): MenuItem!
   deleteMenuItem(id: ID!): MenuItem!
   createOrder: Order!
+  updateOrder(id: ID!, data: UpdateOrderInput!): Order!
+  deleteOrder(id: ID!): Order!
   createOrderItem(data: CreateOrderItemInput!): OrderItem!
   updateOrderItem(id: ID!, data: UpdateOrderItemInput!): OrderItem!
+  deleteOrderItem(id: ID!): OrderItem!
 }
 
 input CreateMenuItemInput {
@@ -39,6 +42,10 @@ input UpdateOrderItemInput {
   quantity: Int
   order: ID!
   price: Int
+}
+
+input UpdateOrderInput {
+  total: Int
 }
 
 type MenuItem {

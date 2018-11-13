@@ -24,6 +24,21 @@ const Mutation = {
     const order = await prisma.createOrder({ total: 0 });
     return order;
   },
+  async updateOrder(parent, args, { prisma }, info) {
+    const order = await prisma.updateOrder({
+      where: {
+        id: args.id
+      },
+      data: {
+        total: args.data.total
+      }
+    });
+    return order;
+  },
+  async deleteOrder(parent, args, { prisma }, info) {
+    const order = await prisma.deleteOrder({ id: args.id });
+    return order;
+  },
   async createOrderItem(parent, args, { prisma }, info) {
     const orderItem = await prisma.createOrderItem({
       name: args.data.name,
@@ -52,6 +67,10 @@ const Mutation = {
         quantity: args.data.quantity
       }
     });
+    return orderItem;
+  },
+  async deleteOrderItem(parent, args, { prisma }, info) {
+    const orderItem = await prisma.deleteOrderItem({ id: args.id });
     return orderItem;
   }
 };
