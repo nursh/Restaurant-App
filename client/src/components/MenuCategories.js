@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+import MenuCategory from './MenuCategory';
 
 class MenuCategories extends Component {
   render() {
-    return <div>Menu Items</div>;
+    return (
+      <div className="row">
+        <MenuCategory />
+      </div>
+    );
   }
 }
 
