@@ -4,10 +4,10 @@ class Menu extends Component {
   render() {
     return (
       <div>
-        <table>
+        <table className="menu-table">
           <thead>
             <tr>
-              <th>ITEMS</th>
+              <th className="menu-table__items-heading">ITEMS</th>
               <th>QUANTITY</th>
               <th>AMOUNT</th>
             </tr>
@@ -24,12 +24,19 @@ class Menu extends Component {
                 &#8358;500
               </td>
             </tr>
+            <tr>
+              <td>Rice and beans</td>
+              <td>
+                <button>-</button>
+                  <span>0</span>
+                <button>+</button>
+              </td>
+              <td>
+                &#8358;500
+              </td>
+            </tr>
           </tbody>
-
         </table>
-
-
- 
       </div>
     );
   }
