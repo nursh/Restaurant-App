@@ -6,7 +6,9 @@ class MenuCategories extends Component {
     return (
       <div className="row">
         <div className="col-1-of-3">
-          <MenuCategory text="Drinks"/>
+          <a href="/menu/drinks">
+            <MenuCategory text="Drinks"/>
+          </a>
         </div>
         <div className="col-1-of-3">
           <MenuCategory text="Soups"/>
