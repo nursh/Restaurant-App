@@ -7,18 +7,18 @@ export default class Header extends Component {
       <div className="header">
         <div className="header__left">
           <Link to="/">
-            <span>Ruby Continental | Hotel</span>
+            <span>Ruby Continental | Restaurant</span>
           </Link>
         </div>
 
         <div className="header__right">
-          <Link to="/menu">
+          <Link to="/menu" className="header__right-item">
             <span>Menu Categories</span>
           </Link>
-          <Link to="/order">
+          <Link to="/order" className="header__right-item">
             <span>Review Order</span>
           </Link>
-          <Link to="/checkout">
+          <Link to="/checkout" className="header__right-item">
             <span>Checkout</span>
           </Link>
         </div>
