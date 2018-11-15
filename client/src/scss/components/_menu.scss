@@ -1,9 +1,69 @@
 .menu-table {
-  width: 60rem;
+  width: 80rem;
   margin: 0 auto;
+  font-family: "Niramit";
+  border-collapse: collapse;
 
-  &__items-heading {
+  tbody:before {
+    line-height: 2.5rem;
+    content: "-";
+    color: white;
+    display: block;
+  }
+
+  &__heading-items {
     text-align: left;
   }
 
+  &__heading-amount {
+    text-align: right;
+  }
+
+  [class^="menu-table__heading"] {
+    font-size: 1.5rem;
+    letter-spacing: 0.1rem;
+  }
+
+  [class^="menu-table__body"] {
+    font-size: 2rem;
+    letter-spacing: 0.1rem;
+  }
+
+  &__body {
+
+    &-price {
+      text-align: right;
+    }
+
+    &-quantity {
+      text-align: center;
+  
+      &__number {
+        padding: 0 2.5rem;
+      }
+    }
+
+    &-order {
+      text-align: center;
+
+      &__button {
+        font-size: 1.5rem !important;
+        background-color: $red-primary;
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        border-radius: .3rem;
+        padding: .2rem .5rem;
+      }
+    }
+
+    &-button {
+      background-color: white;
+      text-decoration: none;
+      text-align: center;
+      border: solid .05rem $button-grey;
+      border-radius: .3rem;
+      padding: 0 .5rem;
+    }
+  }
 }
