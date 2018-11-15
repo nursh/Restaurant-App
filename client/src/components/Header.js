@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 export default class Header extends Component {
   render() {
     return (
-      <div>
-        <div>
+      <div className="header">
+        <div className="header__left">
           <Link to="/">
             <span>Ruby Continental | Hotel</span>
           </Link>
         </div>
 
-        <div>
+        <div className="header__right">
           <Link to="/menu">
             <span>Menu Categories</span>
           </Link>
