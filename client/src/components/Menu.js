@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import Header from './Header';
 
 class Menu extends Component {
   render() {
     return (
       <div>
+        <Header />
         <table className="menu-table">
           <thead>
             <tr>
