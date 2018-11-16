@@ -7,7 +7,9 @@ export default class Header extends Component {
       <div className="header">
         <div className="header__left">
           <Link to="/">
-            <span>Ruby Continental | Restaurant</span>
+            <span className="header__left-text">
+              Ruby Continental | Restaurant
+            </span>
           </Link>
         </div>
 
