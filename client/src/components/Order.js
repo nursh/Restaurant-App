@@ -50,8 +50,8 @@ export default class Order extends Component {
         <tfoot>
           <tr>
             <td></td>
-            <td></td>
-            <td></td>
+            <td className="menu-table__body-total">Total</td>
+            <td className="menu-table__body-price">&#8358;1000</td>
             <td></td>
           </tr>
         </tfoot>

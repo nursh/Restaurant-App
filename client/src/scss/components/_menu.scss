@@ -11,6 +11,13 @@
     display: block;
   }
 
+  tbody:after {
+    line-height: 2.5rem;
+    content: "-";
+    color: white;
+    display: block;
+  }
+
   &__heading-items {
     text-align: left;
   }
@@ -64,6 +71,12 @@
       border: solid .05rem $button-grey;
       border-radius: .3rem;
       padding: 0 .5rem;
+    }
+
+    &-total {
+      text-transform: uppercase;
+      font-weight: bold;
+      text-align: center;
     }
   }
 }
