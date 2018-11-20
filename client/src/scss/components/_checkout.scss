@@ -1,0 +1,12 @@
+.checkout {
+  &__button {
+    padding: 1rem 2rem;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: green;
+    cursor: pointer;
+    font-size: 2rem;
+    border-radius: 3px;
+  }
+}
