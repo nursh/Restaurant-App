@@ -1,12 +1,32 @@
 .checkout {
+
+  &__title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .menu-table {
+    width: 50rem;
+    margin-bottom: 3rem;
+  }
+
   &__button {
-    padding: 1rem 2rem;
+    padding: 1.3rem 12rem;
     border: none;
     font: inherit;
-    color: inherit;
-    background-color: green;
+    font-weight: bold;
+    color: white;
+    background-color: $red-primary;
     cursor: pointer;
     font-size: 2rem;
     border-radius: 3px;
+    display: block;
+    margin: 0 auto;
+    letter-spacing: .2rem;
   }
+}
+
+[class^="checkout"] {
+  font-family: 'Niramit';
 }
