@@ -1,12 +1,16 @@
 import React, { Component } from "react";
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import getCategories from '../utils/getUniqueCategories';
 import MenuCategory from "./MenuCategory";
 import Header from './Header';
 
 class MenuCategories extends Component {
+
   render() {
-    console.log(this.props);
+    const { menuItems } = this.props.data;
+    const categories = getCategories(menuItems);
+    console.log(categories);
     return (
         <div>
           <Header />
