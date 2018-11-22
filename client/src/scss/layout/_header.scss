@@ -1,0 +1,32 @@
+.header {
+
+  @include clearfix;
+  padding: 2rem 5rem;
+  font-size: 1.8rem;
+  margin-bottom: 3rem;
+  box-shadow: -.1rem .4rem 1.1rem -.5rem rgba(0,0,0,0.75);
+
+  &__left {
+    float: left;
+    font-family: 'Concert One';
+    text-decoration: none;
+    font-size: 2.2rem;
+
+    &-text {
+      color: $red-primary;
+    }
+  }
+
+  &__right {
+    float: right;
+    font-family: "Niramit";
+
+    &-item {
+
+      &:not(:last-child) {
+        margin-right: 5rem;
+      }
+
+    }
+  }
+}

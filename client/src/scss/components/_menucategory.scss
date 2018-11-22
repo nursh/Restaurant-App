@@ -1,0 +1,20 @@
+.menu-category {
+  background-color: $grey-light-1;
+  padding: 2rem;
+  box-shadow: 5px 8px 25px -8px rgba(0,0,0,0.75);
+  text-align: center;
+  border-radius: 1.5rem;
+  position: relative;
+  height: 10rem;
+
+  &__title {
+    font-family: "Concert One";
+    font-size: 3rem;
+
+    &-text {
+      @include absCenter;
+    }
+  }
+
+
+}
