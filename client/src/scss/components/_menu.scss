@@ -37,14 +37,13 @@
   }
 
   &__body {
-
     &-price {
       text-align: right;
     }
 
     &-quantity {
       text-align: center;
-  
+
       &__number {
         padding: 0 2.5rem;
       }
@@ -59,8 +58,8 @@
         color: white;
         text-decoration: none;
         text-align: center;
-        border-radius: .3rem;
-        padding: .2rem .5rem;
+        border-radius: 0.3rem;
+        padding: 0.2rem 0.5rem;
         border: none;
       }
     }
@@ -69,9 +68,9 @@
       background-color: white;
       text-decoration: none;
       text-align: center;
-      border: solid .05rem $button-grey;
-      border-radius: .3rem;
-      padding: 0 .5rem;
+      border: solid 0.05rem $button-grey;
+      border-radius: 0.3rem;
+      padding: 0 0.5rem;
     }
 
     &-total {
