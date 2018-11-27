@@ -1,11 +1,29 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
+import { graphql, compose } from "react-apollo";
 import Header from "./Header";
 
+const getOrderId = () => window.localStorage.getItem("orderId");
+
 class Menu extends Component {
-  addToOrder = (name) => (e) => {
-    console.log(name);
+  addToOrder = name => async e => {
+    let orderId = getOrderId();
+    let createdOrder;
+    if (!orderId) {
+      const newOrder = await this.props.createOrder();
+      const { createOrder } = newOrder.data;
+      createdOrder = createOrder.id;
+      window.localStorage.setItem("orderId", createdOrder);
+      orderId = getOrderId();
+    }
+    await this.props.addOrderItem({
+      variables: {
+        name,
+        quantity: 2,
+        price: 2.0,
+        order: orderId
+      }
+    });
   };
 
   renderMenuItem = menuItems => {
@@ -33,9 +51,7 @@ class Menu extends Component {
 
   render() {
     const { menuItems } = this.props.data;
-    const { play } = this.props.data;
     if (!menuItems) return "Loading...";
-    console.log(play);
     return (
       <div>
         <Header />
@@ -61,17 +77,40 @@ const getMenuItems = gql`
       name
       price
     }
-    play {
-      name
-      token
+  }
+`;
+
+const createOrder = gql`
+  mutation {
+    createOrder {
+      id
     }
   }
 `;
 
-export default graphql(getMenuItems, {
-  options: props => ({
-    variables: {
-      category: props.match.params.category
+const createOrderItem = gql`
+  mutation addOrderItem(
+    $name: String!
+    $quantity: Int!
+    $price: Float!
+    $order: ID!
+  ) {
+    createOrderItem(
+      data: { name: $name, quantity: $quantity, price: $price, order: $order }
+    ) {
+      id
     }
-  })
-})(Menu);
+  }
+`;
+
+export default compose(
+  graphql(getMenuItems, {
+    options: props => ({
+      variables: {
+        category: props.match.params.category
+      }
+    })
+  }),
+  graphql(createOrder, { name: "createOrder" }),
+  graphql(createOrderItem, { name: "addOrderItem" })
+)(Menu);
