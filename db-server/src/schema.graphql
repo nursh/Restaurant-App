@@ -5,6 +5,12 @@ type Query {
   orders: [Order!]!
   orderItem(id: ID!): OrderItem!
   orderItems: [OrderItem!]!
+  play: PlayHeader!
+}
+
+type PlayHeader {
+  name: String!
+  token: String!
 }
 
 type Mutation {

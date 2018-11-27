@@ -30,6 +30,12 @@ const Query = {
   async orderItems(parent, args, { prisma }, info) {
     const orderItems = await prisma.orderItems();
     return orderItems;
+  },
+  play(parent, args, ctx, info) {
+    return {
+      name: 'Seeking for knowledge',
+      token: 'TokenTokenTokenToken'
+    };
   }
 };
 
