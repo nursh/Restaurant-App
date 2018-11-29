@@ -59,14 +59,16 @@ class Menu extends Component {
       window.localStorage.setItem("orderId", createdOrder);
       orderId = getOrderId();
     }
-    await this.props.addOrderItem({
-      variables: {
-        name,
-        quantity,
-        price,
-        order: orderId
-      }
-    });
+    if (item.quantity > 0) {
+      await this.props.addOrderItem({
+        variables: {
+          name,
+          quantity,
+          price,
+          order: orderId
+        }
+      });
+    }
   };
 
   addItemToState = ({ name, price }) => {
@@ -80,7 +82,6 @@ class Menu extends Component {
   };
 
   renderMenuItem = menuItems => {
-
     const itemRows = menuItems.map(item => (
       <tr className="menu-table__body__row" key={item.name}>
         <td className="menu-table__body-name">{item.name}</td>

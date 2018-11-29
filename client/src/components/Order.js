@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import Header from './Header';
 
 class Order extends Component {
 
+  removeFromOrder = (itemId) => async (e) => {
+    await this.props.removeItem({
+      variables: {
+        id: itemId
+      }
+    });
+    this.props.data.refetch();
+    this.forceUpdate();
+  }
 
   renderOrderItems = (orderItems) => {
     const rows = orderItems.map(item => (
@@ -17,7 +26,7 @@ class Order extends Component {
         </td>
         <td className="menu-table__body-price">&#8358;{item.price * item.quantity}</td>
         <td className="menu-table__body-order">
-          <button className="menu-table__body-order__button">
+          <button className="menu-table__body-order__button" onClick={this.removeFromOrder(item.id)}>
             Remove item(s)
           </button>
         </td>
@@ -70,6 +79,7 @@ const fetchOrders = gql`
   query($id: ID!) {
     order(id: $id) {
       items {
+        id
         name
         price
         quantity
@@ -79,11 +89,22 @@ const fetchOrders = gql`
   }
 `;
 
-const orderId = window.localStorage.getItem("orderId");
-export default graphql(fetchOrders, {
-  options: () => ({
-    variables: {
-      id: orderId
+const removeOrderItem = gql`
+  mutation($id: ID!) {
+    deleteOrderItem(id: $id) {
+      id
     }
-  })
-})(Order);
+  }
+`;
+
+const orderId = window.localStorage.getItem("orderId");
+export default compose(
+  graphql(fetchOrders, {
+    options: () => ({
+      variables: {
+        id: orderId
+      }
+    })
+  }),
+  graphql(removeOrderItem, { name: 'removeItem' })
+)(Order);
