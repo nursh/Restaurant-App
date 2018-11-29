@@ -1,9 +1,32 @@
 [class^="order"] {
-  font-family: 'Niramit';
+  font-family: "Niramit";
 }
 
-.order__title {
-  text-align: center;
-  font-size: 3rem;
-  margin-bottom: 3rem;
+.order {
+  &__title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  &__error {
+    text-align: center;
+    font-size: 2.5rem;
+  }
+
+  &__checkout {
+    font-family: "Niramit";
+    padding: 1.3rem 12rem;
+    border: none;
+    font-weight: bold;
+    color: white;
+    background-color: $red-primary;
+    cursor: pointer;
+    font-size: 2rem;
+    border-radius: 3px;
+    display: block;
+    margin: 0 auto;
+    letter-spacing: 0.2rem;
+    margin-top: 6rem;
+  }
 }
