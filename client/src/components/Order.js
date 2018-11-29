@@ -1,9 +1,39 @@
 import React, { Component } from 'react';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import Header from './Header';
 
-export default class Order extends Component {
+class Order extends Component {
+
+
+  renderOrderItems = (orderItems) => {
+    const rows = orderItems.map(item => (
+      <tr className="menu-table__body__row" key={item.name}>
+        <td className="menu-table__body-name">{item.name}</td>
+        <td className="menu-table__body-quantity">
+          <button className="menu-table__body-button">-</button>
+          <span className="menu-table__body-quantity__number">{item.quantity}</span>
+          <button className="menu-table__body-button">+</button>
+        </td>
+        <td className="menu-table__body-price">&#8358;{item.price * item.quantity}</td>
+        <td className="menu-table__body-order">
+          <button className="menu-table__body-order__button">
+            Remove item(s)
+          </button>
+        </td>
+      </tr>
+      )
+    );
+
+    return rows;
+  }
+
 
   render() {
+    const { order } = this.props.data;
+    const { error } = this.props.data;
+    if (error) return 'An order does not exist yet';
+    if (!order) return 'Loading...';
     return (
       <div>
       <Header />
@@ -18,40 +48,15 @@ export default class Order extends Component {
           </tr>
         </thead>
         <tbody>
-          <tr className="menu-table__body__row">
-            <td className="menu-table__body-name">Rice and beans</td>
-            <td className="menu-table__body-quantity">
-              <button className="menu-table__body-button">-</button>
-              <span className="menu-table__body-quantity__number">0</span>
-              <button className="menu-table__body-button">+</button>
-            </td>
-            <td className="menu-table__body-price">&#8358;500</td>
-            <td className="menu-table__body-order">
-              <button className="menu-table__body-order__button">
-                Remove item(s)
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td className="menu-table__body-name">Yam and Egg</td>
-            <td className="menu-table__body-quantity">
-              <button className="menu-table__body-button">-</button>
-              <span className="menu-table__body-quantity__number">0</span>
-              <button className="menu-table__body-button">+</button>
-            </td>
-            <td className="menu-table__body-price">&#8358;500</td>
-            <td className="menu-table__body-order">
-              <button className="menu-table__body-order__button">
-                Remove item(s)
-              </button>
-            </td>
-          </tr>
+          {this.renderOrderItems(order.items)}
         </tbody>
         <tfoot>
           <tr>
             <td></td>
             <td className="menu-table__body-total">Total</td>
-            <td className="menu-table__body-price">&#8358;1000</td>
+            <td className="menu-table__body-price">
+              &#8358;{order.items.reduce((sum, item) => sum += (item.price * item.quantity), 0)}
+            </td>
             <td></td>
           </tr>
         </tfoot>
@@ -60,3 +65,25 @@ export default class Order extends Component {
     );
   }
 }
+
+const fetchOrders = gql`
+  query($id: ID!) {
+    order(id: $id) {
+      items {
+        name
+        price
+        quantity
+      }
+      total
+    }
+  }
+`;
+
+const orderId = window.localStorage.getItem("orderId");
+export default graphql(fetchOrders, {
+  options: () => ({
+    variables: {
+      id: orderId
+    }
+  })
+})(Order);
