@@ -1,7 +1,11 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import update from "immutability-helper";
+
+
+import { createOrder } from '../Queries/OrderQueries';
+import { createOrderItem } from '../Queries/OrderItemQueries';
+import { getMenuItems } from '../Queries/MenuItemQueries';
 import Header from "./Header";
 
 const getOrderId = () => window.localStorage.getItem("orderId");
@@ -144,37 +148,9 @@ class Menu extends Component {
   }
 }
 
-const getMenuItems = gql`
-  query($category: Category!) {
-    menuItems(category: $category) {
-      name
-      price
-    }
-  }
-`;
 
-const createOrder = gql`
-  mutation {
-    createOrder {
-      id
-    }
-  }
-`;
 
-const createOrderItem = gql`
-  mutation addOrderItem(
-    $name: String!
-    $quantity: Int!
-    $price: Float!
-    $order: ID!
-  ) {
-    createOrderItem(
-      data: { name: $name, quantity: $quantity, price: $price, order: $order }
-    ) {
-      id
-    }
-  }
-`;
+
 
 export default compose(
   graphql(getMenuItems, {

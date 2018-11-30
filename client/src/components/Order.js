@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 import update from "immutability-helper";
+
+import { updateOrder, fetchOrders } from "../Queries/OrderQueries";
+import { removeOrderItem, updateOrderItem } from "../Queries/OrderItemQueries";
 import Header from "./Header";
 
 class Order extends Component {
@@ -84,10 +86,24 @@ class Order extends Component {
     return rows;
   };
 
+  proceedCheckout = total => async e => {
+    await this.props.updateOrder({
+      variables: {
+        id: orderId,
+        total
+      }
+    });
+    this.props.history.push("/checkout");
+  };
+
   render() {
     const { order } = this.props.data;
     const { error } = this.props.data;
     if (!order) return "Loading...";
+    const total = order.items.reduce(
+      (sum, item) => (sum += item.price * item.quantity),
+      0
+    );
     return (
       <div>
         <Header />
@@ -114,52 +130,24 @@ class Order extends Component {
                   <td className="menu-table__body-total">Total</td>
                   <td className="menu-table__body-price">
                     &#8358;
-                    {order.items.reduce(
-                      (sum, item) => (sum += item.price * item.quantity),
-                      0
-                    )}
+                    {total}
                   </td>
                   <td />
                 </tr>
               </tfoot>
             </table>
-            <button className="order__checkout">Continue to checkout</button>
+            <button
+              className="order__checkout"
+              onClick={this.proceedCheckout(total)}
+            >
+              Proceed to checkout
+            </button>
           </div>
         )}
       </div>
     );
   }
 }
-
-const fetchOrders = gql`
-  query($id: ID!) {
-    order(id: $id) {
-      items {
-        id
-        name
-        price
-        quantity
-      }
-      total
-    }
-  }
-`;
-
-const removeOrderItem = gql`
-  mutation($id: ID!) {
-    deleteOrderItem(id: $id) {
-      id
-    }
-  }
-`;
-
-const updateOrder = gql`
-  mutation($id: ID!, $order: ID!, $quantity: Int) {
-    updateOrderItem(id: $id, data: { order: $order, quantity: $quantity }) {
-      id
-    }
-  }
-`;
 
 const orderId = window.localStorage.getItem("orderId");
 export default compose(
@@ -171,5 +159,6 @@ export default compose(
     })
   }),
   graphql(removeOrderItem, { name: "removeItem" }),
+  graphql(updateOrderItem, { name: "updateOrderItem" }),
   graphql(updateOrder, { name: "updateOrder" })
 )(Order);
