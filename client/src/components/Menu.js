@@ -6,6 +6,7 @@ import update from "immutability-helper";
 import { createOrder } from '../Queries/OrderQueries';
 import { createOrderItem } from '../Queries/OrderItemQueries';
 import { getMenuItems } from '../Queries/MenuItemQueries';
+import { getCategoryName } from '../utils/getUniqueCategories';
 import Header from "./Header";
 
 const getOrderId = () => window.localStorage.getItem("orderId");
@@ -132,6 +133,7 @@ class Menu extends Component {
     return (
       <div>
         <Header />
+        <h2 className="menu__title">{getCategoryName(this.props.match.params.category)}</h2>
         <table className="menu-table">
           <thead>
             <tr>
