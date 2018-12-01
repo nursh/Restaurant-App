@@ -32,51 +32,59 @@ class Checkout extends Component {
         <Header />
         <div>
           <h2 className="checkout__title">Checkout</h2>
-          <table className="menu-table">
-            <thead>
-              <tr>
-                <th className="menu-table__heading-items">ITEMS</th>
-                <th className="menu-table__heading-quantity">QUANTITY</th>
-                <th className="menu-table__heading-amount">AMOUNT</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.items.map(item => (
-                <tr className="menu-table__body__row" key={item.id}>
-                  <td className="menu-table__body-name">{item.name}</td>
-                  <td className="menu-table__body-quantity">
-                    <span className="menu-table__body-quantity__number">
-                      {item.quantity}
-                    </span>
-                  </td>
-                  <td className="menu-table__body-price">
-                    &#8358;{item.price * item.quantity}
-                  </td>
+          {
+            total === 0 ? (
+              <h2 className="order__error">No item(s) have been added to the order</h2>
+            ) : (
+              <div>
+              <table className="menu-table">
+              <thead>
+                <tr>
+                  <th className="menu-table__heading-items">ITEMS</th>
+                  <th className="menu-table__heading-quantity">QUANTITY</th>
+                  <th className="menu-table__heading-amount">AMOUNT</th>
                 </tr>
-              ))}
-            </tbody>
-            <tfoot>
-              <tr>
-                <td />
-                <td className="menu-table__body-total">Total</td>
-                <td className="menu-table__body-price">&#8358;{total}</td>
-                <td />
-              </tr>
-            </tfoot>
-          </table>
-          <StripeCheckout
-            name="Restaurant order"
-            currency="NGN"
-            billingAddress={false}
-            zipCode={false}
-            amount={amount}
-            token={this.handleToken}
-            stripeKey={process.env.REACT_APP_STRIPE_KEY}
-            closed={this.onClosed(total)}
-            email=""
-          >
-            <button className="checkout__button">Pay now</button>
-          </StripeCheckout>
+              </thead>
+              <tbody>
+                {order.items.map(item => (
+                  <tr className="menu-table__body__row" key={item.id}>
+                    <td className="menu-table__body-name">{item.name}</td>
+                    <td className="menu-table__body-quantity">
+                      <span className="menu-table__body-quantity__number">
+                        {item.quantity}
+                      </span>
+                    </td>
+                    <td className="menu-table__body-price">
+                      &#8358;{item.price * item.quantity}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td />
+                  <td className="menu-table__body-total">Total</td>
+                  <td className="menu-table__body-price">&#8358;{total}</td>
+                  <td />
+                </tr>
+              </tfoot>
+            </table>
+            <StripeCheckout
+              name="Restaurant order"
+              currency="NGN"
+              billingAddress={false}
+              zipCode={false}
+              amount={amount}
+              token={this.handleToken}
+              stripeKey={process.env.REACT_APP_STRIPE_KEY}
+              closed={this.onClosed(total)}
+              email=""
+            >
+              <button className="checkout__button">Pay now</button>
+            </StripeCheckout>
+            </div>
+            )
+          }
         </div>
       </div>
     );
