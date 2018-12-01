@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import { graphql, compose } from "react-apollo";
+
+
+import getTotal from "../utils/calculateTotal";
 import { fetchOrders, updateOrder } from "../Queries/OrderQueries";
 import Header from "./Header";
 
@@ -22,10 +25,7 @@ class Checkout extends Component {
   render() {
     const { order } = this.props.data;
     if (!order) return "Loading...";
-    const total = order.items.reduce(
-      (sum, item) => (sum += item.price * item.quantity),
-      0
-    );
+    const total = getTotal(order);
     const amount = total * 100;
     return (
       <div className="checkout">
