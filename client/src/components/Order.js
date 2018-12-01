@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
 import update from "immutability-helper";
 
-import { updateOrder, fetchOrders } from "../Queries/OrderQueries";
+import { fetchOrders } from "../Queries/OrderQueries";
 import { removeOrderItem, updateOrderItem } from "../Queries/OrderItemQueries";
+import getTotal from "../utils/calculateTotal";
 import Header from "./Header";
 
 class Order extends Component {
@@ -86,29 +87,19 @@ class Order extends Component {
     return rows;
   };
 
-  proceedCheckout = total => async e => {
-    await this.props.updateOrder({
-      variables: {
-        id: orderId,
-        total
-      }
-    });
+  proceedCheckout = () => {
     this.props.history.push("/checkout");
   };
 
   render() {
     const { order } = this.props.data;
     const { error } = this.props.data;
-    if (!order) return "Loading...";
-    const total = order.items.reduce(
-      (sum, item) => (sum += item.price * item.quantity),
-      0
-    );
+    const total = getTotal(order);
     return (
       <div>
         <Header />
         <h2 className="order__title">Review Order</h2>
-        {error || order.items.length === 0 ? (
+        {error || total === 0 ? (
           <h2 className="order__error">
             No item(s) have been added to the order
           </h2>
@@ -136,10 +127,7 @@ class Order extends Component {
                 </tr>
               </tfoot>
             </table>
-            <button
-              className="order__checkout"
-              onClick={this.proceedCheckout(total)}
-            >
+            <button className="order__checkout" onClick={this.proceedCheckout}>
               Proceed to checkout
             </button>
           </div>
@@ -159,6 +147,5 @@ export default compose(
     })
   }),
   graphql(removeOrderItem, { name: "removeItem" }),
-  graphql(updateOrderItem, { name: "updateOrderItem" }),
-  graphql(updateOrder, { name: "updateOrder" })
+  graphql(updateOrderItem, { name: "updateOrderItem" })
 )(Order);
