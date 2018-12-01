@@ -40,7 +40,6 @@ input CreateOrderItemInput {
 
 input UpdateOrderItemInput {
   quantity: Int
-  order: ID!
   price: Int
 }
 

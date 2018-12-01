@@ -58,11 +58,6 @@ const Mutation = {
         id: args.id
       },
       data: {
-        order: {
-          connect: {
-            id: args.data.order
-          }
-        },
         price: args.data.price,
         quantity: args.data.quantity
       }

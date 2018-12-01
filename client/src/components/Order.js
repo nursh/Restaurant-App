@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
-import update from "immutability-helper";
 
 import { fetchOrders } from "../Queries/OrderQueries";
 import { removeOrderItem, updateOrderItem } from "../Queries/OrderItemQueries";
@@ -12,41 +11,34 @@ class Order extends Component {
     items: []
   };
 
-  addQuantity = order => e => {
-    const itemIndex = this.menuState.items.findIndex(
-      item => item.name === order.name
-    );
-    const newState = update(this.menuState, {
-      items: {
-        [itemIndex]: {
-          quantity: {
-            $apply: x => (x += 1)
-          }
-        }
+  addQuantity = item => async e => {
+    const newQuantity = item.quantity + 1;
+    await this.props.updateItem({
+      variables: {
+        id: item.id,
+        quantity: newQuantity
       }
     });
-    this.menuState = newState;
-    this.forceUpdate();
+    this.props.data.refetch();
   };
 
-  reduceQuantity = order => e => {
-    const itemIndex = this.menuState.items.findIndex(
-      item => item.name === order.name
-    );
-    const newState = update(this.menuState, {
-      items: {
-        [itemIndex]: {
-          quantity: {
-            $apply: x => {
-              x -= 1;
-              return x < 1 ? 0 : x;
-            }
-          }
+  reduceQuantity = item => async e => {
+    const newQuantity = item.quantity - 1;
+    if (newQuantity === 0) {
+      await this.props.removeItem({
+        variables: {
+          id: item.id
         }
-      }
-    });
-    this.menuState = newState;
-    this.forceUpdate();
+      });
+    } else {
+      await this.props.updateItem({
+        variables: {
+          id: item.id,
+          quantity: newQuantity
+        }
+      });
+    }
+    this.props.data.refetch();
   };
 
   removeFromOrder = itemId => async e => {
@@ -64,11 +56,21 @@ class Order extends Component {
       <tr className="menu-table__body__row" key={item.name}>
         <td className="menu-table__body-name">{item.name}</td>
         <td className="menu-table__body-quantity">
-          <button className="menu-table__body-button">-</button>
+          <button
+            className="menu-table__body-button"
+            onClick={this.reduceQuantity(item)}
+          >
+            -
+          </button>
           <span className="menu-table__body-quantity__number">
             {item.quantity}
           </span>
-          <button className="menu-table__body-button">+</button>
+          <button
+            className="menu-table__body-button"
+            onClick={this.addQuantity(item)}
+          >
+            +
+          </button>
         </td>
         <td className="menu-table__body-price">
           &#8358;{item.price * item.quantity}
@@ -147,5 +149,5 @@ export default compose(
     })
   }),
   graphql(removeOrderItem, { name: "removeItem" }),
-  graphql(updateOrderItem, { name: "updateOrderItem" })
+  graphql(updateOrderItem, { name: "updateItem" })
 )(Order);

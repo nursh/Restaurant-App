@@ -24,8 +24,8 @@ const removeOrderItem = gql`
 `;
 
 const updateOrderItem = gql`
-  mutation($id: ID!, $order: ID!, $quantity: Int) {
-    updateOrderItem(id: $id, data: { order: $order, quantity: $quantity }) {
+  mutation($id: ID!, $quantity: Int) {
+    updateOrderItem(id: $id, data: { quantity: $quantity }) {
       id
     }
   }
