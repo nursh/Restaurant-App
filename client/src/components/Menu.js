@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
 import update from "immutability-helper";
+import {
+  NotificationContainer,
+  NotificationManager
+} from "react-notifications";
 
-
-import { createOrder } from '../Queries/OrderQueries';
-import { createOrderItem } from '../Queries/OrderItemQueries';
-import { getMenuItems } from '../Queries/MenuItemQueries';
-import { getCategoryName } from '../utils/getUniqueCategories';
+import { createOrder } from "../Queries/OrderQueries";
+import { createOrderItem } from "../Queries/OrderItemQueries";
+import { getMenuItems } from "../Queries/MenuItemQueries";
+import { getCategoryName } from "../utils/getUniqueCategories";
 import Header from "./Header";
 
 const getOrderId = () => window.localStorage.getItem("orderId");
@@ -74,6 +77,10 @@ class Menu extends Component {
         }
       });
     }
+    NotificationManager.success(
+      `${name} has been added to the order`,
+      "Order Update"
+    );
   };
 
   addItemToState = ({ name, price }) => {
@@ -133,7 +140,9 @@ class Menu extends Component {
     return (
       <div>
         <Header />
-        <h2 className="menu__title">{getCategoryName(this.props.match.params.category)}</h2>
+        <h2 className="menu__title">
+          {getCategoryName(this.props.match.params.category)}
+        </h2>
         <table className="menu-table">
           <thead>
             <tr>
@@ -145,14 +154,11 @@ class Menu extends Component {
           </thead>
           <tbody>{this.renderMenuItem(menuRows)}</tbody>
         </table>
+        <NotificationContainer enterTimeout={200} leaveTimeout={200} />
       </div>
     );
   }
 }
-
-
-
-
 
 export default compose(
   graphql(getMenuItems, {

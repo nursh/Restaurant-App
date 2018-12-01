@@ -4,6 +4,7 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
+import 'react-notifications/lib/notifications.css';
 import "./scss/main.scss";
 
 const client = new ApolloClient({
