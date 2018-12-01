@@ -24,7 +24,7 @@ class Checkout extends Component {
 
   render() {
     const { order } = this.props.data;
-    if (!order) return "Loading...";
+    const { error } = this.props.data;
     const total = getTotal(order);
     const amount = total * 100;
     return (
@@ -33,7 +33,7 @@ class Checkout extends Component {
         <div>
           <h2 className="checkout__title">Checkout</h2>
           {
-            total === 0 ? (
+            (total === 0 || error)  ? (
               <h2 className="order__error">No item(s) have been added to the order</h2>
             ) : (
               <div>

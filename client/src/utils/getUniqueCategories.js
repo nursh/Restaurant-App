@@ -10,7 +10,7 @@ const getCategories = categoryList => {
 };
 
 const getCategoryName = category => {
-  return category.replace("_", " ")
+  return category.replace(/_/g, " ");
 }
 
 export { getCategories, getCategoryName };
