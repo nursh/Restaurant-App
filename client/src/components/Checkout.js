@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import { graphql, compose } from "react-apollo";
-import axios from 'axios';
+import axios from "axios";
 
 import getTotal from "../utils/calculateTotal";
 import { fetchOrders, updateOrder } from "../Queries/OrderQueries";
@@ -10,15 +10,17 @@ import Header from "./Header";
 class Checkout extends Component {
   paid = false;
 
-  handleToken = async (token) => {
-    const response = await axios.post('/api/stripe', token);
+  handleToken = async token => {
+    const total = getTotal(this.props.data.order);
+    token.amount = total;
+    const response = await axios.post("/api/stripe", token);
     this.paid = true;
   };
 
   onClosed = total => async e => {
     await this.props.updateOrder({
       variables: {
-        id: window.localStorage.getItem('orderId'),
+        id: window.localStorage.getItem("orderId"),
         total
       }
     });
