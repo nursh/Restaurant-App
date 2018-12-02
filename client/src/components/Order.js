@@ -139,12 +139,11 @@ class Order extends Component {
   }
 }
 
-const orderId = window.localStorage.getItem("orderId");
 export default compose(
   graphql(fetchOrders, {
     options: () => ({
       variables: {
-        id: orderId
+        id: window.localStorage.getItem("orderId")
       }
     })
   }),
