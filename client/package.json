@@ -2,8 +2,15 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": {
+    "/api/stripe": {
+      "target": "http://localhost:5000",
+      "secure": false
+    }
+  },
   "dependencies": {
     "apollo-boost": "^0.1.22",
+    "axios": "^0.18.0",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "immutability-helper": "^2.8.1",

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import { graphql, compose } from "react-apollo";
+import axios from 'axios';
 
 import getTotal from "../utils/calculateTotal";
 import { fetchOrders, updateOrder } from "../Queries/OrderQueries";
@@ -9,8 +10,8 @@ import Header from "./Header";
 class Checkout extends Component {
   paid = false;
 
-  handleToken = token => {
-    console.log(token);
+  handleToken = async (token) => {
+    const response = await axios.post('/api/stripe', token);
     this.paid = true;
   };
 
