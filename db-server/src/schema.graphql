@@ -40,12 +40,11 @@ input CreateOrderItemInput {
 
 input UpdateOrderItemInput {
   quantity: Int
-  order: ID!
   price: Int
 }
 
 input UpdateOrderInput {
-  total: Int
+  total: Float
 }
 
 type MenuItem {

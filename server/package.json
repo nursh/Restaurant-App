@@ -10,9 +10,11 @@
   "author": "nur-sh",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4"
   },
   "devDependencies": {
+    "immutability-helper": "^2.8.1",
     "nodemon": "^1.18.6"
   }
 }
