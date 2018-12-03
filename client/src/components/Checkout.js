@@ -4,7 +4,7 @@ import { graphql, compose } from "react-apollo";
 import axios from "axios";
 
 import getTotal from "../utils/calculateTotal";
-import { fetchOrders, updateOrder } from "../Queries/OrderQueries";
+import { fetchOrder, updateOrder } from "../Queries/OrderQueries";
 import Header from "./Header";
 
 class Checkout extends Component {
@@ -101,7 +101,7 @@ class Checkout extends Component {
 }
 
 export default compose(
-  graphql(fetchOrders, {
+  graphql(fetchOrder, {
     options: props => ({
       variables: {
         id: window.localStorage.getItem("orderId")

@@ -16,7 +16,7 @@ const updateOrder = gql`
   }
 `;
 
-const fetchOrders = gql`
+const fetchOrder = gql`
   query($id: ID!) {
     order(id: $id) {
       items {
@@ -30,4 +30,4 @@ const fetchOrders = gql`
   }
 `;
 
-export { createOrder, updateOrder, fetchOrders };
+export { createOrder, updateOrder, fetchOrder };
