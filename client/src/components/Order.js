@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { graphql, compose } from "react-apollo";
 
-import { fetchOrders } from "../Queries/OrderQueries";
+import { fetchOrder } from "../Queries/OrderQueries";
 import { removeOrderItem, updateOrderItem } from "../Queries/OrderItemQueries";
 import getTotal from "../utils/calculateTotal";
 import Header from "./Header";
@@ -140,7 +140,7 @@ class Order extends Component {
 }
 
 export default compose(
-  graphql(fetchOrders, {
+  graphql(fetchOrder, {
     options: () => ({
       variables: {
         id: window.localStorage.getItem("orderId")
