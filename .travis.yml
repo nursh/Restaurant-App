@@ -1,0 +1,15 @@
+sudo: required
+
+services:
+  - docker
+
+after_success:
+  - docker build -t nursh/restaurant-client ./client
+  - docker build -t nursh/restaurant-db-server ./db-server
+  - docker build -t nursh/restaurant-server ./server
+  - docker build -t nursh/restaurant-nginx ./nginx
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push nursh/restaurant-client
+  - docker push nursh/restaurant-db-server
+  - docker push nursh/restaurant-server
+  - docker push nursh/restaurant-nginx
