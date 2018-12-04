@@ -18,7 +18,7 @@ app.post("/api/stripe", (req, res) => {
     description: `Charge for order:${req.body.orderId}`,
     source: req.body.id
   });
-  res.status(200);
+  res.send("Charge created");
 });
 
 app.listen(port, () =>

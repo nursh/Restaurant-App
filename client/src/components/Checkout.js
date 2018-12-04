@@ -14,7 +14,8 @@ class Checkout extends Component {
     const total = getTotal(this.props.data.order);
     token.amount = total;
     token.orderId = window.localStorage.getItem("orderId");
-    await axios.post("/api/stripe", token);
+    const response = await axios.post("/api/stripe", token);
+    console.log(response);
     this.paid = true;
   };
 
